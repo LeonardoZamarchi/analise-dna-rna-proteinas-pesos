@@ -1,6 +1,4 @@
-from cv2 import normalize 
-
-
+#dicionario
 cd_gen = {"UUU": "F", "CUU": "L", "AUU": "I", "GUU": "V",
     "UUC": "F", "CUC": "L", "AUC": "I", "GUC": "V",
     "UUA": "L", "CUA": "L", "AUA": "I", "GUA": "V",
@@ -18,6 +16,7 @@ cd_gen = {"UUU": "F", "CUU": "L", "AUU": "I", "GUU": "V",
     "GGA": "G", "UGG": "W", "CGG": "R", "AGG": "R", 
     "AUG": "M", "UGA": "Stop", "UAG": "Stop", "UAA": "Stop"}
 
+#funcao para criar base complementar A-T T-A C-G G-C
 def cria_dna_complementar(dna):
     base_complementar = {"A": "T",
                         "T": "A",
@@ -28,15 +27,17 @@ def cria_dna_complementar(dna):
         dna_complementar += base_complementar[base]
     return dna_complementar
 
+# funcao RNA - troca Timina por Uracila
 def cria_rna(dna):
     rna = dna.replace("T", "U")
     return rna
 
+# funcao proteina - retona a proteina a partir dos codons / aminoácidos no RNA
 def cria_proteina(rna,cd_gen):
     proteina = ""
     for pos in range(0, len(rna), 3):
         codon = rna[pos:pos+3]
-        aminoacido = cd_gen[codon]
+        aminoacido = cd_gen[str(codon)]
         if aminoacido != "Stop":
             proteina += aminoacido
         else:
@@ -80,6 +81,8 @@ def compara_proteinas(proteina,proteina_referencia):
 
 
 dna = "ATGGTGCATCTGACTCCTGTGGAGAAGTCTGCCGTTACTGCCCTGTGGGGCAAGGTGAACGTGGATGAAGTTGGTGGTGAGGCCCTGGGCAGGCTGCTGGTGGTCTACCCTTGGACCCAGAGGTTCTTTGAGTCCTTTGGGGATCTGTCCACTCCTGATGCTGTTATGGGCAACCCTAAGGTGAAGGCTCATGGCAAGAAAGTGCTCGGTGCCTTTAGTGATGGCCTGGCTCACCTGGACAACCTCAAGGGCACCTTTGCCACACTGAGTGAGCTGCACTGTGACAAGCTGCACGTGGATCCTGAGAACTTCAGGCTCCTGGGCAACGTGCTGGTCTGTGTGCTGGCCCATCACTTTGGCAAAGAATTCACCCCACCAGTGCAGGCTGCCTATCAGAAAGTGGTGGCTGGTGTGGCTAATGCCCTGGCCCACAAGTATCACTAA"
+#dna = 'AGCAAGGTGGTGCCCTGCTCTGAGCGTCCAGGCCAAGCCCATCCTGCACCATGGCCAGGTACAGATGCTGCCGCAGCCGCAGCCTCAGCCGGAGCAGATGCTACCGCCAAAGACCAAGATGTCGCAGACGAAGGAGGCGGAGCTGCCGGAGACCAAGAGCCAGCAGTAAGTGAGCCCAGCTGAGGGTGGGCTGGGGTTGAGGGCTCTCGGGGCCCAAGCTTCCTCTCACCACCTTTCTTGCTCTCACTAGGATGCTGCCGCCGCAGGTACAGGTTGAGGCGTAGAAGATACTAACTGCACATAATTGCACAAAATAACAAGTCCACCAAACTCCTGCCTGAGAATTTTACCAGACTTCAGGACCCTCTTGCCACATCTTGAAAATGACACCATGCAATGAAAAACAGGAGCCTACCAA'
+#dna = 'ACAAGGTGGTGCCCTGCTCTGAGCATTCAGGCCAAGCCCATCCTACACCATGGCCAGGTACAGATGCTGTCGCAGCCAGAGCCGGAGCAGATGTTACCGCCAGAGACGAAGTCGCAGACGAAAGAGGCAGAGCTGCCAGACACAGAGGAGAGCCATGAGTAAGTGGGCCCAGCTGAGGGTGGGCTGGGGCTGGGGCTGGGAGCTCTCAGGGCCCAGCCTTCCTCTCACCACTTTTTTTGGTCTCACCAGGGTGCTGCCGCCGCAGGTCCAGACTGAGACGTAGAAGACACTAATTGCACAGAATAGCATCCACCAAACTCCTGCCTGAGAATGTTACCAGACTTCAAGATCCTCTTGCCACATCTTGAAAATGCCACCATCCAATAAAAATCAGGAGCCTGCTAA'
 proteina_referencia = "MVHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH"
 
 def run(dna):
@@ -97,10 +100,10 @@ def run(dna):
         print(cria_rna(dna))
     elif acao ==3:
         rna = cria_rna(dna)
-        print(cria_proteina(rna,proteina_referencia))
+        print(cria_proteina(rna,cd_gen))
     elif acao ==4:
         rna = cria_rna(dna)
-        proteina = cria_proteina(rna,proteina_referencia)
-        print(compara_proteinas(proteina))
+        proteina = cria_proteina(rna,cd_gen)
+        print(compara_proteinas(proteina, proteina_referencia))
 
 run(dna)
